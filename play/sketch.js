@@ -27,24 +27,24 @@ socket.on("connect", () => {
 })
 
 socket.on("tick", (d) => {
-  const player = data.players.find((player) => player.id === id);
-
-  data = {
-    ...d,
-    players: d.players.filter((p) => p !== player),
-    player
-  }
+  data = d
 })
 
 function drawWall() {
   for (let i = 0; i < data.width; i++) {
     for (let j = 0; j < data.heigth; j++) {
-      fill('rgba(255, 255, 255, 0.25)');
+      fill('rgba(255, 255, 255, 0.10)');
       const fruit = data.fruits.find((fruit) => fruit.position.x === i && fruit.position.y === j)
       if (fruit)
         fill(FRUIT_COLOR_TABLE[fruit.score]);
-      if (data.player?.position.x === i && data.player?.position.y == j)
-        fill('rgba(255, 255, 255, 0.75)');
+      const player =  data.players.find((npc) => npc.position.x === i && npc.position.y === j)
+      if (player) {
+        if (player.id === id)
+          fill('rgba(255, 255, 255, 0.50)');
+        else
+          fill('rgba(255, 255, 255, 1)');
+      }
+        
       rect(i * BLOCK_SIZE + i * 2 + 5, j * BLOCK_SIZE + j * 2 + 5, BLOCK_SIZE, BLOCK_SIZE);
     }
   }
